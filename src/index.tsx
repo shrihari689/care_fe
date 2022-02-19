@@ -3,13 +3,15 @@ import reducer from "../src/Redux/Reducer";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import App from "./App";
 import "./i18n";
-import { applyMiddleware, createStore } from "redux";
+import { applyMiddleware, compose, createStore } from "redux";
 import thunk from "redux-thunk";
 import { Provider } from "react-redux";
 import * as Sentry from "@sentry/browser";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 require("./style/index.css");
-const store = createStore(reducer, applyMiddleware(thunk));
+const composeEnhancers =
+  (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
 Sentry.init({
   environment: process.env.NODE_ENV,
   dsn: "https://8801155bd0b848a09de9ebf6f387ebc8@sentry.io/5183632",
